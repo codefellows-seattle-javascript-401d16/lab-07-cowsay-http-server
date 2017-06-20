@@ -45,37 +45,38 @@ const server = http.createServer((req, res) => {
       res.writeHead(200, {
         'Content-Type' : 'text/plain',
       });
-      res.write('hello world');
+      res.write(typeof req.url.query);
       res.end();
       return;
     }
 
-    // if(req.url.pathname === '/cowsay'){
-    //   res.writeHead(200, {
-    //     'Content-Type' : 'text/plain',
-    //   });
-    //   res.write(cowsay.say({
-    //     text: '',
-    //     e: 'oO',
-    //     T : 'U ',
-    //   }));
-    //   res.end();
-    //   return;
-    // }
-
-    if(req.method === 'GET' && req.url.pathname === '/cowsay' && req.url.query){
+    if(req.method === 'GET' && req.url.pathname === '/cowsay' && req.url.query.text != undefined){
       res.writeHead(200, {
         'Content-Type' : 'text/plain',
       });
-      // res.write(console.log(JSON.stringify(req.url.query)));
       res.write(cowsay.say({
-        text: JSON.stringify(req.url.query).split(':')[1],
+        // text: JSON.stringify(req.url.query).split(':')[1],
+        text: `${req.url.query.text}`,
         e: 'oO',
         T : 'U ',
       }));
       res.end();
       return;
     }
+
+    if(req.method === 'GET' && req.url.pathname === '/cowsay' && req.url.query.text === undefined){
+      res.writeHead(400, {
+        'Content-Type' : 'test/plain',
+      });
+      res.write(cowsay.say({
+        text: 'bad request\ntry: localhost:3000/cowsay?text=cows+are+cute',
+        e: 'oO',
+        T: 'U ',
+      }));
+      res.end();
+      return;
+    }
+
 
     // respond with a 200 status code aw jeah
 
