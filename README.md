@@ -10,10 +10,10 @@
   * write a question and observation on canvas
 
 # Build Tool Instructions
-* add a package.json
-* add a eslintrc
-* add a gitignore
-* add a readme with project description
+* add a package.json-DONE
+* add a eslintrc-DONE
+* add a gitignore-DONE
+* add a readme with project description-ADDED FILE, need to fill out README
 * include any npm scripts for starting server, linting, etc
 
 # Directions
@@ -23,14 +23,14 @@
 ## Server Endpoints
 ### /
 for all request to `/` the server should respond with the following:
- * a header containing `Content-Type: text/plain`
- * a status code of **200**
- * a response with the string "hello world"
+ * a header containing `Content-Type: text/plain` -DONE
+ * a status code of **200**-DONE
+ * a response with the string "hello world"-DONE
 
 ### /cowsay
 #### GET REQUEST    
 * the query string should have the key value `text=<message>`
-* the response header should include `Content-Type: text/plain`
+* the response header should include `Content-Type: text/plain`-DONE???
 * if the query `text=message` is set, respond with:  
  * a status code of 200
  * a body including the value returned from `cowsay.say({text: <querystring text>})`
