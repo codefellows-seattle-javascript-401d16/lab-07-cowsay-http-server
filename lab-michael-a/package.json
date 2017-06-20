@@ -1,0 +1,12 @@
+{
+  "name": "lab-michael-a",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "lint": "eslint ."
+  },
+  "author": "michael axelson",
+  "license": "ISC"
+}
