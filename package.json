@@ -1,0 +1,27 @@
+{
+  "name": "lab-07-cowsay-http-server",
+  "version": "1.0.0",
+  "description": "![cf](https://i.imgur.com/7v5ASc8.png) lab-07-cowsay-http-server ======",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha",
+    "lint": "eslint",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/izzybaer/lab-07-cowsay-http-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/izzybaer/lab-07-cowsay-http-server/issues"
+  },
+  "homepage": "https://github.com/izzybaer/lab-07-cowsay-http-server#readme",
+  "devDependencies": {
+    "eslint": "^4.0.0",
+    "expect": "^1.20.2",
+    "mocha": "^3.4.2"
+  }
+}
