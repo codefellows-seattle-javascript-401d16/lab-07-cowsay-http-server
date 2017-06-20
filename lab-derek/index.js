@@ -5,8 +5,6 @@ const url = require('url');
 const querystring = require('querystring');
 const cowsay = require('cowsay');
 
-console.log(cowsay.say({text: 'hello', e: 'oO', T: 'U'}));
-
 const bodyParse = (req, callback) => {
   if (req.method === 'POST' || req.method === 'PUT'){
     let body = '';
@@ -30,16 +28,45 @@ const server = http.createServer((req, res) => {
       return;
     }
 
-    if(){
+    // try{
+    //   req.body = JSON.parse(body);
+    // } catch (err) {
+    //   res.writeHead(400);
+    //   res.end();
+    //   return;
+    // }
 
+    if(req.url.pathname === '/'){
+      res.writeHead(200);
+      res.write('hello world!');
+      res.end();
+      return;
+    }
+
+    if(req.method === 'GET' && req.url.pathname === '/cowsay'){
+      if(req.url.query.text){
+        res.writeHead(200, {
+          'Content-type': 'text/plain',
+        });
+        res.write(cowsay.say({text: req.url.query.text}));
+        res.end();
+        return;
+      } else {
+        res.writeHead(400);
+        res.write(cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'}));
+        res.end();
+        return;
+      }
     }
 
     res.writeHead(404);
+    res.write(req.url.pathname);
+    res.write(cowsay.say({text: '\nThe Cows are out to pasture.'}));
     res.end();
-  })
+  });
 
 });
 
 server.listen(3000, () => {
-  console.log('serv\'s up on 3000. Cowabunga.')
-})
+  console.log(cowsay.say({text: 'serv\'s up on 3000. Cowabunga.', e: 'oO', T: 'U'}));
+});
