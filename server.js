@@ -3,6 +3,7 @@
 const http = require('http');
 const url = require('url');
 const querystring = require('querystring');
+const cowsay = require('cowsay');
 
 const bodyparse = (req, callback) => {
   if(req.method === 'POST' || req.method === 'PUT') {
@@ -40,6 +41,15 @@ const server = http.createServer((req, res) => {
       res.write('Hello World');
       res.end();
       return;
+    }
+    if(req.method === 'GET' && req.url.pathname === '/cowsay') {
+      res.writeHead(200, {
+        'Content-Type' : 'text/plain',
+      });
+      res.write(cowsay.say(req.url.query));
+      res.end();
+      return;
+
     }
   });
 });
