@@ -4,6 +4,7 @@
 const http = require('http');
 const url = require('url');
 const querystring = require('querystring');
+const cowsay = require('cowsay');
 
 
 const bodyParse = (req, callback) => {
@@ -23,7 +24,7 @@ const server = http.createServer((req, res) => {
   req.url = url.parse(req.url);
   req.url.query = querystring.parse(req.url.query);
   console.log('req.url', req.url);
-  // console.log('req.method', req.method);
+  console.log('req.method', req.method);
   bodyParse(req, (err, body) => {
     if(err) {
       res.writeHead(500);
@@ -31,19 +32,20 @@ const server = http.createServer((req, res) => {
       return;
     }
 
-    // parse the body as json
+
     try {
       req.body = JSON.parse(body);
     } catch (err) {
-      // if there was mal formated JSON we send back a 400 bad request
+
+      console.log(req.body);
       res.writeHead(400);
       res.end();
       return;
     }
 
-      // respond with a 200 status code and yay
 
-    // if the pathname is /time and a GET req send back the date
+
+
     if(req.method === 'GET' && req.url.pathname === '/time'){
       res.writeHead(200, {
         'Content-Type' : 'application/json',
@@ -56,7 +58,7 @@ const server = http.createServer((req, res) => {
       return;
     }
 
-    // if the pathname is /echo and a POST req send back their body as json
+
     if(req.method === 'POST' && req.url.pathname === '/echo'){
       console.log(req.body);
       res.writeHead(200, {
@@ -69,7 +71,7 @@ const server = http.createServer((req, res) => {
 
     // "/" pathname...
     if(req.method === 'GET' && req.url.pathname === '/'){
-      console.log('cooooool');
+      console.log(req.body);
       res.writeHead(200, {
         'Content-Type': 'text/plain',
       });
@@ -80,18 +82,35 @@ const server = http.createServer((req, res) => {
 
     //cowsay stuff...
     if(req.method === 'GET' && req.url.pathname === '/cowsay'){
-      res.writeHead(200, {
-        'Content-Type' : 'text/plain',
-      });
-      res.write(JSON.stringify({
-        now: Date.now(),
-        date: new Date(),
-      }));
+      if (req.url.query.text){
+        res.writeHead(200, {
+          'Content-Type' : 'text/plain',
+        });
+        res.write(cowsay.say({text: req.url.query.text}));
+      } else {
+        res.writeHead(400, {
+          'Content-Type' : 'text/plain',
+        });
+      }
       res.end();
       return;
     }
 
-    // otherwise 404
+    if(req.method === 'POST' && req.url.pathname === '/cowsay'){
+      console.log('body',req.body);
+      if (req.body){
+        res.writeHead(200, {
+          'Content-Type' : 'text/plain',
+        });
+        res.write(cowsay.say({text: req.body.text}));
+      } else {
+        res.writeHead(400, {
+          'Content-Type' : 'text/plain',
+        });
+      }
+      res.end();
+      return;
+    }
     res.writeHead(444);
     res.end();
   });
