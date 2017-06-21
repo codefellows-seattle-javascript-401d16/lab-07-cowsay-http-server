@@ -11,7 +11,7 @@ const bodyParse = (req, callback) => {
     let body = '';
     req.on('data', (buffer) => {
       body += buffer.toString();
-      console.log(`body pre parse`, body);
+      (`body pre parse`, body);
     });
     req.on('end', () => callback(null, body));
     req.on('error', (err) => callback(err));
@@ -23,9 +23,9 @@ const bodyParse = (req, callback) => {
 const server = http.createServer((req, res) =>{
   req.url = url.parse(req.url);
   req.url.query = querystring.parse(req.url.query);
-  console.log(`requrl parse: `, req.url);
-  console.log(`requrlpathname parse: `, req.url.pathname);
-  console.log(`requrlquery parse: `, req.url.query);
+  (`requrl parse: `, req.url);
+  (`requrlpathname parse: `, req.url.pathname);
+  (`requrlquery parse: `, req.url.query);
   bodyParse(req, (err, body) =>{
     if (err) {
       res.writeHead(500);
@@ -35,8 +35,9 @@ const server = http.createServer((req, res) =>{
     ///////
     try {
       req.body = JSON.parse(body);
-      console.log(`body post parse: `, req.body);
+      (`body post parse: `, req.body);
     } catch (err) {
+      ('bad json');
       res.writeHead(400);
       res.end();
       return;
@@ -67,21 +68,19 @@ const server = http.createServer((req, res) =>{
     }
     ////this is where it recognizes query on a post request
     if (req.url.pathname === `/cowsay` && req.method === `POST`) {
-      console.log(req.body);
+      (req.body);
       if (req.body[`text`]) {
         res.writeHead(200, {
           'Content-Type' : 'text/plain',
         });
-        res.write(cowsay.say({text: req.url.query[`text`]}));
+        res.write(cowsay.say(req.body));
         res.end();
         return;
       }
     }
-    res.writeHead(404);
+    res.writeHead(484);
     res.write(cowsay.say({text: `cow got tired of waiting`}));
   });
 });
-
-
 
 server.listen(3000, () => console.log(`server up on 3000`));
