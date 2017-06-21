@@ -1,5 +1,5 @@
 module.exports = (res, code, option) => {
-  let args = [code];
+  const args = [code];
 
   option && args.push({ 'Content-Type' : 'text/plain' });
 

@@ -2,7 +2,7 @@ const http = require('http');
 const url = require('url');
 const querystring = require('querystring');
 const bodyParse = require('./lib/body-parse');
-const makeCowsay = require('./lib/make-cowsay');
+const cowsayInvoke = require('./lib/cowsay-invoke');
 const headEnd = require('./lib/head-end.js');
 
 module.exports = http.createServer((req, res) => {
@@ -18,7 +18,7 @@ module.exports = http.createServer((req, res) => {
 
     if (req.url.pathname === '/') return headEnd(res, 200, true);
 
-    if (req.url.pathname === '/cowsay') return makeCowsay(req, res);
+    if (req.url.pathname === '/cowsay') return cowsayInvoke(req, res);
 
     headEnd(res, 404);
   });
