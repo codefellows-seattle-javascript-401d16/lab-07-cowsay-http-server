@@ -28,7 +28,7 @@ const server = module.exports = http.createServer((req, res) => {
       return;
     } else {
       res.writeHead(400, {'Content-Type':'text/plain'});
-      res.message(cowsay.say({text: 'bad request\ntry localhost:3000/cowsay?text=howdy'}));
+      res.write(cowsay.say({text: 'bad request\ntry localhost:3000/cowsay?text=howdy'}));
       res.end();
       return;
     }
@@ -36,8 +36,8 @@ const server = module.exports = http.createServer((req, res) => {
 
   if(req.method === 'POST' && req.url.pathname === '/cowsay') {
     bodyParser(req, (err, body) => {
-      if(err) {console.error(err)
-      res.writeHead(400, {})
+      if(err) {console.error(err);
+        res.writeHead(400, {});
       } else {
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.write(cowsay.say({text: body.text}));
@@ -45,7 +45,8 @@ const server = module.exports = http.createServer((req, res) => {
         return;
       }
     });
-
-  server.listen(3000, () => {
-    console.log('servin up some peaky blinderz on port 3000');
-  });
+  }
+});
+server.listen(3000, () => {
+  console.log('servin up some peaky blinderz on port 3000');
+});
