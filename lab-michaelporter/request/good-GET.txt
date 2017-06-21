@@ -1,0 +1,3 @@
+GET /cowsay?text=goodGET HTTP/1.1
+Host: local
+Accept: text/plain
