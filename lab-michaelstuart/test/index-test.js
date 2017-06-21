@@ -19,5 +19,19 @@ describe('server response', () => {
     });
   });
 
+  it('should return cowsay containing bad request', done => {
+    request.get('http://localhost:8080/cowsay', (err, res) => {
+      expect(res.body.slice(43, 54)).toEqual('bad request');
+      done();
+    });
+  });
+
+  it('should return cowsay containing placeholder query', done => {
+    request.get('http://localhost:8080/cowsay?text=placeholder', (err, res) => {
+      expect(res.body.slice(17, 28)).toEqual('placeholder');
+      done();
+    });
+  });
+
   after(() => server.close());
 });
