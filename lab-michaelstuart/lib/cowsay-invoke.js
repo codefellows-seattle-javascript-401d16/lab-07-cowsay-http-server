@@ -5,8 +5,8 @@ module.exports = (req, res) => {
   let code = 200;
 
   if (!text) {
-    code = 400;
     text = 'bad request\ntry: localhost:3000/cowsay?text=howdy';
+    code = 400;
   }
 
   res.writeHead(code, { 'Content-Type' : 'text/plain' });
