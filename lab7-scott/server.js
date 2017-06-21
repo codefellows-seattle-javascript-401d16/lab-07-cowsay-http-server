@@ -11,6 +11,7 @@ const bodyParse = (req, callback) => {
     let body = '';
     req.on('data', (buffer) => {
       body += buffer.toString();
+      console.log(`body pre parse`, body);
     });
     req.on('end', () => callback(null, body));
     req.on('error', (err) => callback(err));
@@ -21,10 +22,14 @@ const bodyParse = (req, callback) => {
 
 const server = http.createServer((req, res) =>{
   // console.log(`req: `, req);
-  console.log(`requrl: `, req.url);
-  console.log(`requrlquery: `, req.url.query);
+  // console.log(`requrl: `, req.url);
+  // console.log(`requrlpathname: `, req.url.pathname);
+  // console.log(`requrlquery: `, req.url.query);
   req.url = url.parse(req.url);
   req.url.query = querystring.parse(req.url.query);
+  console.log(`requrl parse: `, req.url);
+  console.log(`requrlpathname parse: `, req.url.pathname);
+  console.log(`requrlquery parse: `, req.url.query);
   bodyParse(req, (err, body) =>{
     if (err) {
       res.writeHead(500);
@@ -47,8 +52,19 @@ const server = http.createServer((req, res) =>{
       res.write('hello world');
       res.end();
     }
-    /////
-    
+    /////this is where it's not recognizing the query 
+    if (req.url.pathname === `/cowsay` && req.url.query === `{ text: message }`) {
+      if (err) {
+        res.writeHead(400);
+        res.end();
+        return;
+      }
+      res.writeHead(200, {
+        'Content-Type' : 'text/plain',
+      });
+      res.write(JSON.stringify(req.body));
+      res.end();
+    }
   });
 });
 
