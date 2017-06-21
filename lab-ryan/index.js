@@ -53,11 +53,6 @@ const server = http.createServer((req, res) => {
         res.write(cowsay.say({text: req.url.query.text}));
         res.end();
         return;
-      } else {
-        res.writeHead(400);
-        res.write(cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=message'}));
-        res.end();
-        return;
       }
       if(req.method === 'PUT' && req.url.pathname === '/cowsay'){
         try {
