@@ -12,20 +12,13 @@ module.exports = http.createServer((req, res) => {
   bodyParse(req, (err, body) => {
     if(err) return headEnd(res, 500);
 
-    try {
-      req.body = JSON.parse(body);
-    }
-    catch (err) {
-      return headEnd(res, 400);
-    }
+    try { req.body = JSON.parse(body); }
 
-    if (req.url.pathname === '/') {
-      return headEnd(res, 200, true);
-    }
+    catch (err) { return headEnd(res, 400); }
 
-    if (req.url.pathname === '/cowsay') {
-      return makeCowsay(req, res);
-    }
+    if (req.url.pathname === '/') return headEnd(res, 200, true);
+
+    if (req.url.pathname === '/cowsay') return makeCowsay(req, res);
 
     headEnd(res, 404);
   });
