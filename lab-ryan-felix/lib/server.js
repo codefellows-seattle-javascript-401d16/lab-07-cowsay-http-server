@@ -16,11 +16,7 @@ module.exports = () => http.createServer( (req, res) => {
     }
 
     try {
-      console.log('before parse');
-      console.log(body);
       req.body = JSON.parse(body);
-      console.log('\nafter parse');
-      console.log(body);
     } catch (err) {
       res.writeHead(400); // bad request
       res.end();

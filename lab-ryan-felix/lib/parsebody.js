@@ -13,4 +13,4 @@ module.exports = (req, callback) => {
   } else {
     callback(null, JSON.stringify({}));
   }
-}
+};
