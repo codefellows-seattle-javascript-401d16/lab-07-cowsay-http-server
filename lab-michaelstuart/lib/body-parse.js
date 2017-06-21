@@ -1,5 +1,5 @@
 module.exports = (req, callback) => {
-  if (req.body) {
+  if (req.method === 'POST') {
     let body = '';
     req.on('data', buffer => body += buffer.toString());
     req.on('end', () => callback(null, body));
