@@ -79,6 +79,7 @@ const server = http.createServer((req, res) => {
         return;
       }
     }
+    res.writeHead(404);
   });
 });
 
