@@ -32,10 +32,10 @@ module.exports = () => http.createServer( (req, res) => {
       return;
     } else if(req.url.pathname === '/cowsay') {
       if(req.method === 'GET') {
-        if(req.url.query.message && req.url.query.message.length > 0) {
+        if(req.url.query.text && req.url.query.text.length > 0) {
           res.writeHead(200);
           res.write(cowsay.say({
-            text: req.url.query.message,
+            text: req.url.query.text,
           }));
           res.end();
           return;
@@ -47,10 +47,10 @@ module.exports = () => http.createServer( (req, res) => {
         }
       } else
       if(req.method === 'POST') {
-        if(req.body.message) {
+        if(req.body.text) {
           res.writeHead(200);
           res.write(cowsay.say({
-            text: req.body.message,
+            text: req.body.text,
           }));
           res.end();
           return;
