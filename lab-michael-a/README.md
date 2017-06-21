@@ -1,0 +1,1 @@
+This project now makes get and post requests to my localhost server using httpie. It has an echo, feature, and time feature with different functionality... the cowsay command, followed by text, will call on the cowsay program to print a cow to the bash window.
