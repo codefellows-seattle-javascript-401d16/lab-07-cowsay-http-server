@@ -10,7 +10,7 @@ module.exports = http.createServer((req, res) => {
   req.url.query = querystring.parse(req.url.query);
   const contentType = { 'Content-Type' : 'text/plain' };
   bodyParse(req, (err, body) => {
-    req.body = JSON.parse(body || '{}');
+    req.body = JSON.parse(body);
     if(err) return headWrite(res, 500);
     if (req.url.pathname === '/') return headWrite(res, 200, contentType);
     if (req.url.pathname === '/cowsay') return cowsayInvoke(req, res, contentType);
