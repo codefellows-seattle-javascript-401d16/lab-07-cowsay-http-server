@@ -52,8 +52,8 @@ const server = http.createServer((req, res) =>{
       res.write('hello world');
       res.end();
     }
-    /////this is where it's not recognizing the query 
-    if (req.url.pathname === `/cowsay` && req.url.query === `{ text: message }`) {
+    /////this is where it's not recognizing the query
+    if (req.url.pathname === `/cowsay` && req.url.query['text']) {
       if (err) {
         res.writeHead(400);
         res.end();
@@ -62,7 +62,7 @@ const server = http.createServer((req, res) =>{
       res.writeHead(200, {
         'Content-Type' : 'text/plain',
       });
-      res.write(JSON.stringify(req.body));
+      res.write(cowsay.say({text: req.url.query['text']}));
       res.end();
     }
   });
