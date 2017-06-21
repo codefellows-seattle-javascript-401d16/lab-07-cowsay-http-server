@@ -55,7 +55,7 @@ const server = http.createServer((req, res) =>{
         res.writeHead(200, {
           'Content-Type' : 'text/plain',
         });
-        res.write(cowsay.say({text: req.url.query['text']}));
+        res.write(cowsay.say({text: req.url.query[`text`]}));
         res.end();
         return;
       } else {
@@ -67,15 +67,18 @@ const server = http.createServer((req, res) =>{
     }
     ////this is where it recognizes query on a post request
     if (req.url.pathname === `/cowsay` && req.method === `POST`) {
-      if (JSON.stringify(req.body).includes(`text`)) {
+      console.log(req.body);
+      if (req.body[`text`]) {
         res.writeHead(200, {
           'Content-Type' : 'text/plain',
         });
-        res.write(cowsay.say({text: req.url.query['text']}));
+        res.write(cowsay.say({text: req.url.query[`text`]}));
         res.end();
         return;
       }
     }
+    res.writeHead(404);
+    res.write(cowsay.say({text: `cow got tired of waiting`}));
   });
 });
 
