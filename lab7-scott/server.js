@@ -21,10 +21,6 @@ const bodyParse = (req, callback) => {
 };
 
 const server = http.createServer((req, res) =>{
-  // console.log(`req: `, req);
-  // console.log(`requrl: `, req.url);
-  // console.log(`requrlpathname: `, req.url.pathname);
-  // console.log(`requrlquery: `, req.url.query);
   req.url = url.parse(req.url);
   req.url.query = querystring.parse(req.url.query);
   console.log(`requrl parse: `, req.url);
@@ -39,6 +35,7 @@ const server = http.createServer((req, res) =>{
     ///////
     try {
       req.body = JSON.parse(body);
+      console.log(`body post parse: `, req.body);
     } catch (err) {
       res.writeHead(400);
       res.end();
@@ -52,8 +49,8 @@ const server = http.createServer((req, res) =>{
       res.write('hello world');
       res.end();
     }
-    /////this is where it's not recognizing the query
-    if (req.url.pathname === `/cowsay` && req.method === 'GET' ) {
+    /////this is where it recognizing query on a get request
+    if (req.url.pathname === `/cowsay` && req.method === `GET` ) {
       if (req.url.query['text']) {
         res.writeHead(200, {
           'Content-Type' : 'text/plain',
@@ -63,7 +60,18 @@ const server = http.createServer((req, res) =>{
         return;
       } else {
         res.writeHead(400);
-        res.write(cowsay.say({text: `bad request\ntry: localhost:3000/cowsay`}));
+        res.write(cowsay.say({text: `bad request\ntry: localhost:3000/cowsay?text=howdy`}));
+        res.end();
+        return;
+      }
+    }
+    ////this is where it recognizes query on a post request
+    if (req.url.pathname === `/cowsay` && req.method === `POST`) {
+      if (JSON.stringify(req.body).includes(`text`)) {
+        res.writeHead(200, {
+          'Content-Type' : 'text/plain',
+        });
+        res.write(cowsay.say({text: req.url.query['text']}));
         res.end();
         return;
       }
