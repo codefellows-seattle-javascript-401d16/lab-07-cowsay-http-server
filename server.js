@@ -43,13 +43,33 @@ const server = http.createServer((req, res) => {
       return;
     }
     if(req.method === 'GET' && req.url.pathname === '/cowsay') {
-      res.writeHead(200, {
-        'Content-Type' : 'text/plain',
-      });
-      res.write(cowsay.say(req.url.query));
+
+      try {
+        res.writeHead(200, {
+          'Content-Type' : 'text/plain',
+        });
+        res.write(cowsay.say(req.url.query));
+      } catch(err) {
+        res.writeHead(400);
+        res.write(cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=<message>'}));
+      }
       res.end();
       return;
+    }
+    if(req.method === 'POST' && req.url.pathname === '/cowsay') {
 
+      try {
+        res.writeHead(200, {
+          'Content-Type' : 'text/plain',
+          'text' : 'message',
+        });
+        res.write(cowsay.say(req.url.query));
+      } catch(err) {
+        res.writeHead(400);
+        res.write(cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=<message>'}));
+      }
+      res.end();
+      return;
     }
   });
 });
