@@ -34,7 +34,7 @@ const server = http.createServer((req, res) => {
       res.end();
       return;
     }
-    if(req.method && req.url.pathname === '/') {
+    if(req.url.pathname === '/') {
       res.writeHead(200, {
         'Content-Type' : 'text/plain',
       });
@@ -61,16 +61,19 @@ const server = http.createServer((req, res) => {
       try {
         res.writeHead(200, {
           'Content-Type' : 'text/plain',
-          'text' : 'message',
         });
-        res.write(cowsay.say(req.url.query));
+        res.write(cowsay.say(req.body));
       } catch(err) {
-        res.writeHead(400);
+        res.writeHead(400, {
+          'Content-Type' : 'text/plain',
+        });
         res.write(cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=<message>'}));
       }
       res.end();
       return;
     }
+    res.writeHead(404);
+    res.end();
   });
 });
 
