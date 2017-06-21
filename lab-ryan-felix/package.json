@@ -1,0 +1,17 @@
+{
+  "name": "lab-ryan-felix",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "cowsay": "^1.1.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha",
+    "lint": "eslint ./"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
