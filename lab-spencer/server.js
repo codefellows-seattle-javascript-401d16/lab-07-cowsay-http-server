@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, {
       'Content-Type': 'text/plain',
     });
-    res.write('hello world');
+    res.write(cowsay.say({text: 'hello world'}));
     res.end();
     return;
   }
@@ -41,12 +41,10 @@ const server = http.createServer((req, res) => {
       res.writeHead(400, {
         'Content-Type': 'text/plain',
       });
-      res.write(cowsay.say({text: `bad request\ntry: localhost:${port}/cowsay?text=howdy`}));
+      res.write(cowsay.say({text: `Bad request\ntry: localhost:${port}/cowsay?text=howdy`}));
       res.end();
       return;
-    }
-
-    if(req.method === 'POST') {
+    } else if(req.method === 'POST') {
       bodyParse(req, (err, body) => {
         if(err) {
           res.writeHead(500, {
@@ -84,12 +82,19 @@ const server = http.createServer((req, res) => {
         res.end();
         return;
       });
+    } else {
+      res.writeHead(400, {
+        'Content-Type': 'text/plain',
+      });
+      res.write(cowsay.say({text: `Bad request\nThis route does not accept that type of request`}));
+      res.end();
+      return;
     }
   } else {
     res.writeHead(404, {
       'Content-Type': 'text/plain',
     });
-    res.write('Route not found');
+    res.write(cowsay.say({text: `Route not found`}));
     res.end();
     return;
   }
