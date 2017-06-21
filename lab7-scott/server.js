@@ -1,0 +1,57 @@
+'use strict';
+
+const http = require('http');
+const url = require('url');
+const querystring = require('querystring');
+const cowsay = require('cowsay');
+
+//the callback signature will be a (err, body) which will be used inthe server function.
+const bodyParse = (req, callback) => {
+  if (req.method === 'POST') {
+    let body = '';
+    req.on('data', (buffer) => {
+      body += buffer.toString();
+    });
+    req.on('end', () => callback(null, body));
+    req.on('error', (err) => callback(err));
+  } else {
+    callback(null, '{}');
+  }
+};
+
+const server = http.createServer((req, res) =>{
+  // console.log(`req: `, req);
+  console.log(`requrl: `, req.url);
+  console.log(`requrlquery: `, req.url.query);
+  req.url = url.parse(req.url);
+  req.url.query = querystring.parse(req.url.query);
+  bodyParse(req, (err, body) =>{
+    if (err) {
+      res.writeHead(500);
+      res.end();
+      return;
+    }
+    ///////
+    try {
+      req.body = JSON.parse(body);
+    } catch (err) {
+      res.writeHead(400);
+      res.end();
+      return;
+    }
+    ///////
+    if (req.url.pathname === `/`) {
+      res.writeHead(200, {
+        'Content-Type' : 'text/plain',
+      });
+      res.write('hello world');
+      res.end();
+    }
+    /////
+    
+  });
+});
+
+
+
+server.listen(3000, () => console.log(`server up on 3000`));
