@@ -29,23 +29,23 @@ for all request to `/` the server should respond with the following:
 
 ### /cowsay
 #### GET REQUEST    
-* the query string should have the key value `text=<message>`
-* the response header should include `Content-Type: text/plain`-DONE???
+* the query string should have the key value `text=<message>`-DONE CHECKED
+* the response header should include `Content-Type: text/plain`-DONE
 * if the query `text=message` is set, respond with:  
- * a status code of 200
- * a body including the value returned from `cowsay.say({text: <querystring text>})`
+ * a status code of 200 - DONE
+ * a body including the value returned from `cowsay.say({text: <querystring text>})` DONE
 * if the query `text=message` is **not** set, respond with:  
- * status code = 400
- * a body including the value returned from `cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'})`
+ * status code = 400 DONE
+ * a body including the value returned from `cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'})` DONE
 
 #### POST REQUEST   
-* the response header should include `Content-Type: text/plain`
+* the response header should include `Content-Type: text/plain`-DONE
 * if the json `{text: message}` is set in the body, respond with:  
- * a status code of 200
- * a body including the value returned from `cowsay.say({text: <querystring text>})`
+ * a status code of 200-DONE
+ * a body including the value returned from `cowsay.say({text: <querystring text>})`** DONE
 * if the json`{text: message}`is **not** set in the body, respond with:  
- * status code = 400
- * a body including the value returned from `cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'})`
+ * status code = 400-DONE
+ * a body including the value returned from `cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'})`*** DONE
 
 ## Bonus
 * **2pts** - test your get route
