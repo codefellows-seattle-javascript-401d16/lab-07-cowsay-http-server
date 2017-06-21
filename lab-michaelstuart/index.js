@@ -21,7 +21,7 @@ module.exports = http.createServer((req, res) => {
 
     if (req.url.pathname === '/cowsay') return cowsayInvoke(req, res, contentType);
 
-    headWrite(res, 404);
+    cowsayInvoke(req, res, contentType, 404);
   });
 
 }).listen(8080, () => console.log('server running on port 8080'));
