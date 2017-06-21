@@ -3,9 +3,8 @@
 const http = require('http');
 const url = require('url');
 const querystring = require('querystring');
-const cowsay = require('cowsay');
-
 const port = process.env.PORT || 3000;
+const cowsay = require('cowsay');
 
 const bodyParse = (req, callback) => {
   let body = '';
@@ -51,7 +50,7 @@ const server = http.createServer((req, res) => {
           res.writeHead(500, {
             'Content-Type': 'text/plain',
           });
-          res.write('There was an error with the server.');
+          res.write('Server error');
           res.end();
           return;
         }
@@ -62,7 +61,7 @@ const server = http.createServer((req, res) => {
           res.writeHead(400, {
             'Content-Type': 'text/plain',
           });
-          res.write(cowsay.say({text: `There was an issue with the body format.`}));
+          res.write(cowsay.say({text: `Bad request\nMake sure you are using the format {"text": "message"} as your body`}));
           res.end();
           return;
         }
@@ -79,7 +78,7 @@ const server = http.createServer((req, res) => {
         res.writeHead(400, {
           'Content-Type': 'text/plain',
         });
-        res.write(cowsay.say({text: `You need to take a long look at your body...`}));
+        res.write(cowsay.say({text: `Bad request\nMake sure you are using the format {"text": "message"} as your body`}));
         res.end();
         return;
       });
@@ -87,7 +86,7 @@ const server = http.createServer((req, res) => {
       res.writeHead(400, {
         'Content-Type': 'text/plain',
       });
-      res.write(cowsay.say({text: `Make sure you are using the correct method.`}));
+      res.write(cowsay.say({text: `Bad request\nThis route does not accept that type of request`}));
       res.end();
       return;
     }
@@ -95,14 +94,12 @@ const server = http.createServer((req, res) => {
     res.writeHead(404, {
       'Content-Type': 'text/plain',
     });
-    res.write(cowsay.say({text: `Uh, naw. Try checking that route again.`}));
+    res.write(cowsay.say({text: `Route not found`}));
     res.end();
     return;
   }
 });
 
 server.listen(port, () => {
-  console.log(cowsay.say({
-    text : `Howdy, the server is now running on localhost:${port}.`,
-  }));
+  console.log(`Server is up at localhost:${port}`);
 });
