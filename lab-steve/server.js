@@ -27,13 +27,13 @@ const server = http.createServer((req, res) => {
       res.end();
       return;
     }
-    try {
-      req.body = JSON.parse(body);
-    } catch(err) {
-      res.writeHead(400);
-      res.end();
-      return;
-    }
+    // try {
+    //   req.body = JSON.parse(body);
+    // } catch(err) {
+    //   res.writeHead(400);
+    //   res.end();
+    //   return;
+    // }
     if(req.url.pathname === '/') {
       console.log('200');
       res.writeHead(200, {
@@ -51,12 +51,13 @@ const server = http.createServer((req, res) => {
         res.write(cowsay(req.url.query));
       } catch(err) {
         res.writeHead(400);
-        res.write(cowsay.say({text: 'bad request, use POST'}));
+        res.write(cowsay.say({text: 'oops, you mooooootilated that request\nPOST localhost:3000/cowsay text=<message>', f: 'mutilated'}));
       }
       res.end();
       return;
     }
     if (req.method === 'POST' && req.url.pathname ==='/cowsay') {
+      if(body) req.body = JSON.parse(body);
       try {
         res.writeHead(200, {
           'Content-Type' : 'text/plain',
@@ -66,7 +67,7 @@ const server = http.createServer((req, res) => {
         res.writeHead(400, {
           'Content-Type' : 'text/plain',
         });
-        res.write(cowsay.say({text: 'bad request'}));
+        res.write(cowsay.say({text: 'oops, you mooooootilated that request\nPOST localhost:3000/cowsay text=<message>', f: 'mutilated'}));
       }
       res.end();
       return;
