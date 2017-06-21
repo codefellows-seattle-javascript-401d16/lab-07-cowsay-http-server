@@ -27,7 +27,6 @@ const server = http.createServer((req, res) => {
   console.log('req.method', req.method);
   bodyParse(req, (err, body) => {
     if(err) {
-      // respond to the user with a 500 server error
       res.writeHead(500);
       res.end();
       return;
@@ -36,7 +35,10 @@ const server = http.createServer((req, res) => {
     try {
       req.body = JSON.parse(body);
     } catch (err) {
-      res.writeHead(400);
+      res.writeHead(400, {
+        'Content-Type': 'text/plain',
+      });
+      res.write(cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=cows+are+cute'}));
       res.end();
       return;
     }
@@ -45,7 +47,7 @@ const server = http.createServer((req, res) => {
       res.writeHead(200, {
         'Content-Type' : 'text/plain',
       });
-      res.write(typeof req.url.query);
+      res.write('hello world');
       res.end();
       return;
     }
@@ -55,7 +57,6 @@ const server = http.createServer((req, res) => {
         'Content-Type' : 'text/plain',
       });
       res.write(cowsay.say({
-        // text: JSON.stringify(req.url.query).split(':')[1],
         text: `${req.url.query.text}`,
         e: 'oO',
         T : 'U ',
@@ -77,24 +78,32 @@ const server = http.createServer((req, res) => {
       return;
     }
 
-
-    // respond with a 200 status code aw jeah
-
-    // if the pathname is /time and a GET req send back the date
-
-    if(req.method === 'GET' && req.url.pathname === '/time'){
+    if(req.method === 'POST' && req.url.pathname === '/cowsay' && req.body.text != undefined){
       res.writeHead(200, {
-        'Content-Type' : 'application/json',
+        'Content-Type' : 'text/plain',
       });
-      res.write(JSON.stringify({
-        now: Date.now(),
-        date: new Date(),
+      res.write(cowsay.say({
+        text: `${req.body.text}`,
+        e: 'oO',
+        T : 'U ',
       }));
       res.end();
       return;
     }
 
-    // if the pathname is /echo and a POST req send back their body as JSON
+    if(req.method === 'POST' && req.url.pathname === '/cowsay' && req.body.text === undefined){
+      res.writeHead(400, {
+        'Content-Type' : 'test/plain',
+      });
+      res.write(cowsay.say({
+        text: 'bad request\ntry: localhost:3000/cowsay?text=cows+are+cute',
+        e: 'oO',
+        T: 'U ',
+      }));
+      res.end();
+      return;
+    }
+
     if(req.method === 'POST' && req.url.pathname === '/echo'){
       console.log('sweetness echo worked');
       res.writeHead(200, {
@@ -105,7 +114,6 @@ const server = http.createServer((req, res) => {
       return;
     }
 
-    // otherwise 404
     res.writeHead(444);
     res.end();
   });
