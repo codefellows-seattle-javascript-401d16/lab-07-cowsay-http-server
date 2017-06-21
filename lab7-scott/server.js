@@ -53,17 +53,20 @@ const server = http.createServer((req, res) =>{
       res.end();
     }
     /////this is where it's not recognizing the query
-    if (req.url.pathname === `/cowsay` && req.url.query['text']) {
-      if (err) {
+    if (req.url.pathname === `/cowsay` && req.method === 'GET' ) {
+      if (req.url.query['text']) {
+        res.writeHead(200, {
+          'Content-Type' : 'text/plain',
+        });
+        res.write(cowsay.say({text: req.url.query['text']}));
+        res.end();
+        return;
+      } else {
         res.writeHead(400);
+        res.write(cowsay.say({text: `bad request\ntry: localhost:3000/cowsay`}));
         res.end();
         return;
       }
-      res.writeHead(200, {
-        'Content-Type' : 'text/plain',
-      });
-      res.write(cowsay.say({text: req.url.query['text']}));
-      res.end();
     }
   });
 });
