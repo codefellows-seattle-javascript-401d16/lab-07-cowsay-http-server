@@ -2,7 +2,7 @@
   "name": "lab-michaelporter",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "lint": "eslint .",
     "test": "mocha"

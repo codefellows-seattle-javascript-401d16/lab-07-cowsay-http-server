@@ -31,6 +31,17 @@ const server = http.createServer((req, res) => {
       return;
     }
 
+    try {
+      req.body = JSON.parse(concatedBody);
+    } catch (err) {
+      res.writeHead(400, {
+        'Content-Type': 'text/plain',
+      });
+      res.write('Your JSON is bad');
+      res.end();
+      return;
+    }
+
     if (req.url.pathname === '/') {
       res.writeHead(200, {
         'Content-Type': 'text/plain',
