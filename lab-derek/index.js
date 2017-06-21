@@ -14,8 +14,9 @@ const bodyParse = (req, callback) => {
 
     req.on('end', () => callback(null, body));
     req.on('error', (err) => callback(err));
+  } else {
+    callback(null, '{}');
   }
-  callback(null, {});
 };
 
 const server = http.createServer((req, res) => {
@@ -28,13 +29,13 @@ const server = http.createServer((req, res) => {
       return;
     }
 
-    // try{
-    //   req.body = JSON.parse(body);
-    // } catch (err) {
-    //   res.writeHead(400);
-    //   res.end();
-    //   return;
-    // }
+    try {
+      req.body = JSON.parse(body);
+    } catch (err) {
+      res.writeHead(400);
+      res.end();
+      return;
+    }
 
     if(req.url.pathname === '/'){
       res.writeHead(200);
@@ -49,6 +50,24 @@ const server = http.createServer((req, res) => {
           'Content-type': 'text/plain',
         });
         res.write(cowsay.say({text: req.url.query.text}));
+        res.end();
+        return;
+      } else {
+        res.writeHead(400);
+        res.write(cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'}));
+        res.end();
+        return;
+      }
+    }
+
+    // req.body.text = 'test-hi';
+
+    if(req.method === 'POST' && req.url.pathname === '/cowsay'){
+      if(req.body.text){
+        res.writeHead(200, {
+          'Content-type': 'text/plain',
+        });
+        res.write(cowsay.say({text: JSON.stringify(req.body.text)}));
         res.end();
         return;
       } else {
