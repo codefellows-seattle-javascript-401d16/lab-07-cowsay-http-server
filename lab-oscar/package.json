@@ -1,0 +1,22 @@
+{
+  "name": "lab-oscar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "cowsay": "^1.1.9",
+    "eslint": "^4.0.0",
+    "expect": "^1.20.2",
+    "http": "^0.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.4.2"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
