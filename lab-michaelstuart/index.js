@@ -3,24 +3,25 @@ const url = require('url');
 const querystring = require('querystring');
 const bodyParse = require('./lib/body-parse');
 const cowsayInvoke = require('./lib/cowsay-invoke');
-const headEnd = require('./lib/head-end.js');
+const headWrite = require('./lib/head-write.js');
 
 module.exports = http.createServer((req, res) => {
   req.url = url.parse(req.url);
   req.url.query = querystring.parse(req.url.query);
+  const contentType = { 'Content-Type' : 'text/plain' };
 
   bodyParse(req, (err, body) => {
-    if(err) return headEnd(res, 500);
+    if(err) return headWrite(res, 500, null);
 
     try { req.body = JSON.parse(body); }
 
-    catch (err) { return headEnd(res, 400); }
+    catch (err) { return headWrite(res, 400, null); }
 
-    if (req.url.pathname === '/') return headEnd(res, 200, true);
+    if (req.url.pathname === '/') return headWrite(res, 200, contentType);
 
-    if (req.url.pathname === '/cowsay') return cowsayInvoke(req, res);
+    if (req.url.pathname === '/cowsay') return cowsayInvoke(req, res, contentType);
 
-    headEnd(res, 404);
+    headWrite(res, 404, null);
   });
 
 }).listen(8080, () => console.log('server running on port 8080'));

@@ -1,6 +1,6 @@
-const cowsay = require('cowsay');
+const headWrite = require('./head-write');
 
-module.exports = (req, res) => {
+module.exports = (req, res, contentType) => {
   let text = req.method === 'GET' ? req.url.query.text : req.body.text;
   let code = 200;
 
@@ -9,7 +9,5 @@ module.exports = (req, res) => {
     code = 400;
   }
 
-  res.writeHead(code, { 'Content-Type' : 'text/plain' });
-  res.write(cowsay.say({ text }));
-  res.end();
+  headWrite(res, code, contentType, text);
 };
