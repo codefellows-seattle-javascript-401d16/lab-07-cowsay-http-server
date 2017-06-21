@@ -55,10 +55,21 @@ const server = http.createServer((req, res) => {
         return;
       } else {
         res.writeHead(400);
-        res.write(cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=heeeey'}));
+        res.write(cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=message'}));
         res.end();
         return;
       }
+      if(req.method === 'PUT' && req.url.pathname === '/cowsay'){
+        try {
+          res.writeHead(200, {
+            'Content-type': 'text/plain',
+          });
+          res.write(cowsay.say(req.body));
+        } catch (err) {
+          res.write(cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=message'}));
+          res.end();
+        }
+        return;
     }
     res.writeHead(444);
     res.write(req.url.pathname);
