@@ -36,19 +36,6 @@ const server = http.createServer((req, res) => {
       return;
     }
 
-    if(req.method === 'GET' && req.url.pathname === '/time'){
-      res.writeHead(200, {
-        'Content-Type' : 'application/json',
-      });
-
-      res.write(JSON.stringify( {
-        now: Date.now(),
-        date: new Date(),
-      }));
-      res.end();
-      return;
-    }
-
     if(req.url.pathname === '/'){
       res.writeHead(200, {
         'Content-Type' : 'text/plain',
@@ -59,43 +46,42 @@ const server = http.createServer((req, res) => {
     }
 
     if (req.method === 'GET' && req.url.pathname === '/cowsay'){
-      res.writeHead(200, {
-        'Content-Type' : 'text/plain',
-      });
-      res.write((cowsay.say({
-        text : 'I\'m a moooodule',
-        e : 'oO',
-        T : 'U ',
-      })));
-      res.end();
-      return;
-    } else {
-      res.writeHead(500);
-      res.write({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'});
-      res.end();
-      return;
+      try {
+        res.writeHead(200, {
+          'Content-Type' : 'text/plain',
+        });
+        res.write((cowsay.say({
+          text : 'I\'m a moooodule',
+          e : 'oO',
+          T : 'U ',
+        })));
+        res.end();
+        return;
+      }
+      catch(e){
+        res.writeHead(500);
+        res.write({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'});
+        res.end();
+        return;
+      }
     }
-
-
-  // if(req.method === 'POST' && req.url.pathname === '/echo'){
-  //   // console.log('coooool');
-  //   res.writeHead(200, {
-  //     'Content-Type': 'application/json',
-  //   });
-  //   res.write(JSON.stringify(' '));
-  //   res.end();
-  //   return;
-  // }
 
     if(req.method === 'POST' && req.url.pathname === '/cowsay'){
-      res.writeHead(200, {
-        'Content-Type' : 'text/plain',
-      });
-      res.write('tedt');
-      res.end();
-      return;
+      try{
+        res.writeHead(200, {
+          'Content-Type' : 'text/plain',
+        });
+        res.write(req.body.text);
+        res.end();
+        return;
+      }
+      catch(e) {
+        res.writeHead(500);
+        res.write({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'});
+        res.end();
+        return;
+      }
     }
-
     res.writeHead(444);
     res.end();
   });
