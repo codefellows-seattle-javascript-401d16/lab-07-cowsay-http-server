@@ -6,5 +6,5 @@
 - the other prints a default greeting
 
 ## Examples
-- http://localhost:8080/ will receive response of 'hello world'
-- http://localhost:8080/cowsay?text=placeholder will receive response of cow image containing 'palceholder' encoded in a string
+- GET http://localhost:8080/ will receive response of 'hello world'
+- GET http://localhost:8080/cowsay?text=hi will receive response of cow image containing 'hi' encoded in a string
