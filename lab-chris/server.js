@@ -21,9 +21,6 @@ const bodyParse = (req, callback) => {
 const server = http.createServer((req, res) => {
   req.url = url.parse(req.url);
   req.url.query = querystring.parse(req.url.query);
-  console.log(req.url.query.text);
-  // console.log('req.url', req.url);
-  // console.log('req.method', req.method);
   bodyParse(req, (err, body) => {
     if(err) {
       res.writeHead(500);
@@ -38,6 +35,7 @@ const server = http.createServer((req, res) => {
       res.end();
       return;
     }
+    console.log(req.body);
 
     if(req.method && req.url.pathname === '/'){
       res.writeHead(200, {
@@ -70,28 +68,35 @@ const server = http.createServer((req, res) => {
     }
 
     if(req.method === 'GET' && req.url.pathname === '/cowsay'){
-      if(req.url.query.text === undefined){
-        res.writeHead(400);
-        res.write(cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'}));
-        res.end();
-        return;
-      } else {
+      if(req.url.query.text){
         res.writeHead(200, {
           'Content-Type' : 'text/plain',
         });
         res.write(cowsay.say({text: req.url.query.text}));
         res.end();
         return;
+      } else {
+        res.writeHead(400);
+        res.write(cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'}));
+        res.end();
+        return;
       }
     }
 
     if(req.method === 'POST' && req.url.pathname === '/cowsay'){
-      res.writeHead(200, {
-        'Content-Type': 'text/plain',
-      });
-      res.write(JSON.stringify(req.body));
-      res.end();
-      return;
+      if(req.body.text){
+        res.writeHead(200, {
+          'Content-Type' : 'text/plain',
+        });
+        res.write(cowsay.say({text: JSON.stringify(req.body.text)}));
+        res.end();
+        return;
+      } else {
+        res.writeHead(400);
+        res.write(cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'}));
+        res.end();
+        return;
+      }
     }
 
     res.writeHead(444);
@@ -99,6 +104,6 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(4000, () => {
-  console.log('server up :: 4000');
+server.listen(3000, () => {
+  console.log('server up :: 3000');
 });
