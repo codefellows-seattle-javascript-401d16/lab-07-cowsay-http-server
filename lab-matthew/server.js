@@ -20,6 +20,8 @@ const bodyParse = (req, callback) => {
   }
 };
 
+// Factory function - plays role of constructor without new keyword; function that returns an Object
+// Returns server object
 const server = http.createServer((req, res) => {
   req.url = url.parse(req.url);
   req.url.query = querystring.parse(req.url.query);
@@ -67,7 +69,7 @@ const server = http.createServer((req, res) => {
 
     if(req.method === 'GET' && req.url.pathname === '/cowsay' && req.url.query.text === undefined){
       res.writeHead(400, {
-        'Content-Type' : 'test/plain',
+        'Content-Type' : 'text/plain',
       });
       res.write(cowsay.say({
         text: 'bad request\ntry: localhost:3000/cowsay?text=cows+are+cute',
@@ -79,21 +81,31 @@ const server = http.createServer((req, res) => {
     }
 
     if(req.method === 'POST' && req.url.pathname === '/cowsay' && req.body.text != undefined){
-      res.writeHead(200, {
-        'Content-Type' : 'text/plain',
-      });
-      res.write(cowsay.say({
-        text: `${req.body.text}`,
-        e: 'oO',
-        T : 'U ',
-      }));
+
+      try{
+        res.writeHead(200, {
+          'Content-Type' : 'text/plain',
+        });
+        res.write(cowsay.say({
+          text: `${req.body.text}`,
+          e: 'oO',
+          T : 'U ',
+        }));
+      } catch (err) {
+        res.writeHead(400);
+        res.write(cowsay.say({
+          text: `'bad request\ntry: localhost:3000/cowsay?text=cows+are+cute`,
+          e: 'oO',
+          T : 'U ',
+        }));
+      }
       res.end();
       return;
     }
 
     if(req.method === 'POST' && req.url.pathname === '/cowsay' && req.body.text === undefined){
       res.writeHead(400, {
-        'Content-Type' : 'test/plain',
+        'Content-Type' : 'text/plain',
       });
       res.write(cowsay.say({
         text: 'bad request\ntry: localhost:3000/cowsay?text=cows+are+cute',
@@ -120,6 +132,7 @@ const server = http.createServer((req, res) => {
 
 });
 
+// on server instance invoking listen method, passing in 3000 port and callback)
 server.listen(3000, () => {
   console.log('server up :: 3000');
 });
