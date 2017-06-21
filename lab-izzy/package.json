@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/izzybaer/lab-07-cowsay-http-server#readme",
   "devDependencies": {
+    "cowsay": "^1.1.9",
     "eslint": "^4.0.0",
     "expect": "^1.20.2",
     "mocha": "^3.4.2"
