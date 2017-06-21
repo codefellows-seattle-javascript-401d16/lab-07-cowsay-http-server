@@ -93,7 +93,8 @@ const server = http.createServer((req, res) => {
       res.end();
       return;
     }
-
+    res.writeHead(404);
+    res.end();
   });
 
 });
