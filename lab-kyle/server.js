@@ -89,7 +89,6 @@ const server = http.createServer((req, res) => {
     res.writeHead(444);
     res.end();
   });
-
 });
 
 server.listen(3000, () => console.log('server up :: 3000'));
