@@ -6,10 +6,10 @@ const server = require('../lib/server.js');
 
 describe('testing cowsay server', () => {
   before((done) => {
-    server.listen(3000, () => done());
+    server.server.listen(3000, () => done());
   });
   after((done) => {
-    server.close(() => done());
+    server.server.close(() => done());
   });
   it('should return \'200: Hello World!\'', (done) => {
     request
