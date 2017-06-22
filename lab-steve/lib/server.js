@@ -20,7 +20,7 @@ server.bodyparse = (req, callback) => {
   }
 };
 
-server.server = module.exports = http.createServer((req, res) => {
+server.server = http.createServer((req, res) => {
   req.url = url.parse(req.url);
   req.url.query = querystring.parse(req.url.query);
   server.bodyparse(req, (err, body) => {
