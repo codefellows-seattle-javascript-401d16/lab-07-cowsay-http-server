@@ -2,11 +2,11 @@
   "name": "lab-07-cowsay-http-server",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "mocha",
     "lint": "eslint .",
-    "start": "nodemon server.js"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",

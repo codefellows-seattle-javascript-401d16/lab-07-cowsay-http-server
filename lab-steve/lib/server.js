@@ -5,7 +5,9 @@ const url = require('url');
 const querystring = require('querystring');
 const cowsay = require('cowsay');
 
-const bodyparse = (req, callback) => {
+const server = module.exports = {};
+
+server.bodyparse = (req, callback) => {
   if(req.method === 'POST' || req.method === 'PUT') {
     let body = '';
     req.on('data', (buf) => {
@@ -18,22 +20,15 @@ const bodyparse = (req, callback) => {
   }
 };
 
-const server = http.createServer((req, res) => {
+server.server = module.exports = http.createServer((req, res) => {
   req.url = url.parse(req.url);
   req.url.query = querystring.parse(req.url.query);
-  bodyparse(req, (err, body) => {
+  server.bodyparse(req, (err, body) => {
     if(err) {
       res.writeHead(500);
       res.end();
       return;
     }
-    // try {
-    //   req.body = JSON.parse(body);
-    // } catch(err) {
-    //   res.writeHead(400);
-    //   res.end();
-    //   return;
-    // }
     if(req.url.pathname === '/') {
       console.log('200');
       res.writeHead(200, {
@@ -75,8 +70,4 @@ const server = http.createServer((req, res) => {
     res.writeHead(404);
     res.end();
   });
-});
-
-server.listen(3000, () => {
-  console.log('server up :: 3000');
 });
