@@ -18,7 +18,7 @@ const bodyParse = (req, callback) => {
   }
 };
 
-const server = http.createServer((req, res) => {
+const server = module.exports = http.createServer((req, res) => {
   req.url = url.parse(req.url);
   req.url.query = querystring.parse(req.url.query);
   bodyParse(req, (err, concatedBody) => {
@@ -37,7 +37,6 @@ const server = http.createServer((req, res) => {
       res.writeHead(400, {
         'Content-Type': 'text/plain',
       });
-      res.write('Your JSON is bad');
       res.end();
       return;
     }
@@ -46,7 +45,7 @@ const server = http.createServer((req, res) => {
       res.writeHead(200, {
         'Content-Type': 'text/plain',
       });
-      res.write('hello world');
+      res.write(cowsay.say({text: 'hello world'}));
       res.end();
       return;
     }
@@ -69,18 +68,18 @@ const server = http.createServer((req, res) => {
     }
 
     if (req.method === 'POST' && req.url.pathname === '/cowsay') {
-      if (req.url.quert['text']) {
+      if (req.body['text']) {
         res.writeHead(200, {
           'Content-Type': 'text/plain',
         });
-        res.write(cowsay.say({text: req.url.query['text']}));
+        res.write(cowsay.say({text: req.body['text']}));
         res.end();
         return;
       }
       res.writeHead(400, {
         'Content-Type': 'text/plain',
       });
-      res.write(cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'}));
+      res.write(cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay with body {text : \'howdy\'}'}));
       res.end();
       return;
     }
