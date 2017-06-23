@@ -17,6 +17,7 @@ const bodyParse = (req, callback) => {
 };
 
 const server = http.createServer((req, res) => {
+  
   req.url = url.parse(req.url);
   req.url.query = querystring.parse(req.url.query);
 
