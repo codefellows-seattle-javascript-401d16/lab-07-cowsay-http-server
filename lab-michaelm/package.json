@@ -1,0 +1,29 @@
+{
+  "name": "lab-michaelm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "lint": "eslint .",
+    "server": "node server.js 3000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Adutchguy/lab-07-cowsay-http-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Adutchguy/lab-07-cowsay-http-server/issues"
+  },
+  "homepage": "https://github.com/Adutchguy/lab-07-cowsay-http-server#readme",
+  "dependencies": {
+    "cowsay": "^1.1.9"
+  },
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "mocha": "^3.4.2"
+  }
+}
