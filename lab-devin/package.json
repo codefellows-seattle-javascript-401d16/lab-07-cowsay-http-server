@@ -1,0 +1,25 @@
+{
+  "name": "lab-devin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cowsay": "^1.1.9"
+  },
+  "devDependencies": {
+    "eslint": "^4.1.1",
+    "expect": "^1.20.2",
+    "mocha": "^3.4.2",
+    "superagent": "^3.5.2"
+  }
+}

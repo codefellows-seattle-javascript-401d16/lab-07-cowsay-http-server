@@ -73,6 +73,28 @@ const server = http.createServer((req, res) => {
           return;
         }
       }
+
+      if(req.method === 'POST') {
+        if(req.body['text']) {
+          res.writeHead(200, {
+            'Content-Type': 'text/plain'
+          });
+          res.write(cowsay.say(req.body));
+          res.end();
+          return;
+        }else{
+          res.writeHead(400, {
+            'Content-Type': 'text/plain'
+          });
+          res.write(cowsay.say({
+            text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'
+          }));
+          res.end();
+          return;
+        }
+      }
     }
-  })
-})
+  });
+});
+
+server.listen(3000, () => console.log('Server 3000'));
