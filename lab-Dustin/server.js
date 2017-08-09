@@ -5,86 +5,73 @@ const url = require('url');
 const querystring = require('querystring');
 const cowsay = require('cowsay');
 
-// callbacks should be (err, body) => undefined
-
 const bodyParse = (req, callback) => {
-  if(req.method === 'POST' || req.method === 'PUT'){
-    let body = '';
-    req.on('data', (buf) => {
-      body += buf.toString();
-    });
-    req.on('end', () => callback(null, body));
-    req.on('err', (err) => callback(err));
-  } else {
-    callback(null, '{}');
-  }
+  req.body = '';
+  req.on('data', function(data) {
+    req.body += data.toString();
+  });
+
+  req.on('end', function() {
+    try {
+      req.body = JSON.parse(req.body);
+      callback(null, req.body);
+    } catch (e) {
+      callback(e);
+    }
+  });
 };
 
 const server = http.createServer((req, res) => {
   req.url = url.parse(req.url);
   req.url.query = querystring.parse(req.url.query);
-  console.log('req.url', req.url);
-  console.log('req.method', req.method);
-  bodyParse(req, (err, body) => {
-    if(err) {
-      // respond to the user with a 500 server error
-      res.writeHead(500);
-      res.end();
-      return;
-    }
 
-    try {
-      req.body = JSON.parse(body);
-    } catch (err) {
-      res.writeHead(400);
-      res.end();
-      return;
-    }
-
-    if(req.url.pathname === '/'){
-      res.writeHead(200, {
-        'Content-Type' : 'text/plain',
-      });
-      res.write('hello world');
-      res.end();
-      return;
-    }
-
-    if(req.method === 'GET' && req.url.pathname === '/cowsay') {
-      if(req.url.query.text){
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.write(cowsay.say({
-          text: JSON.stringify(req.url.query.text),
-        }));
-        res.end();
-        return;
-      } else {
-        res.writeHead(400, {'Content-Type':'text/plain'});
-        res.message(cowsay.say({text: 'bad request\ntry localhost:3000/cowsay?text=howdy'}));
-        res.end();
-        return;
-      }
-    }
-
-    if(req.method === 'POST' && req.url.pathname === '/cowsay') {
-    bodyParser(req, (err, body) => {
-      if(err) {console.error(err)
-      res.writeHead(400, {})
-      } else {
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.write(cowsay.say({text: body.text}));
-        res.end();
-        return;
-      }
-
-    // otherwise 404
-    res.writeHead(404);
+  if (req.method === 'GET' && req.url.pathname === '/') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end();
-  });
-};
+  }
 
+  if (
+		req.method === 'GET' &&
+		req.url.pathname === '/cowsay' &&
+		req.url.query.text
+	) {
+    res.writeHead(200);
+    res.write(cowsay.say({ text: req.url.query.text }));
+    res.end();
+  } else if (
+		req.method === 'GET' &&
+		req.url.pathname === '/cowsay' &&
+		!req.url.query.text
+	) {
+    res.writeHead(400);
+    res.write(
+			cowsay.say({
+  text: 'bad request\ntry localhost:3000/cowsay?text=howdy',
+})
+		);
+    res.end();
+  }
+
+  if (req.method === 'POST' && req.url.pathname === '/cowsay') {
+    bodyParse(req, function(err) {
+      if (err) return console.error(err);
+      if (req.body.text) {
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.write(cowsay.say({ text: req.body.text }));
+        res.end();
+      } else {
+        res.writeHead(400);
+        res.write(
+					cowsay.say({
+  text: 'bad request\ntry: localhost:3000/cowsay?text=howdy',
+})
+				);
+        res.end();
+      }
+    });
+  }
+});
 
 server.listen(3000, () => {
   console.log('server up :: 3000');
-});
 });
